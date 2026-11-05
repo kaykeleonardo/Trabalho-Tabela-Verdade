@@ -3,6 +3,7 @@ def validar_expressao(entrada):
     delimitadores = {'(', ')', ' '}
     letras = []
     parenteses_iguais = 0
+    contador_operadores = 0
 
     for x in entrada:
         if x == '(':
@@ -12,20 +13,26 @@ def validar_expressao(entrada):
             if parenteses_iguais < 0:
                 print("Erro: Parênteses fechados incorretamente.")
                 return False, []
-        elif x.isalpha():
+        elif x.isalpha() and x not in 'vV':
             letra = x.upper()
             if letra not in letras:
                 letras.append(letra)
+        elif x in operadores_permitidos:
+            contador_operadores += 1
         elif x not in delimitadores and x not in operadores_permitidos:
             print(f"Erro: Caractere inválido detectado: {x}")
             return False, []
-
+    
     if parenteses_iguais != 0:
         print("Erro: Expressão com parênteses desbalanceados.")
         return False, []
 
     if not letras:
         print("Erro: Nenhuma proposição/letra foi informada.")
+        return False, []
+
+    if contador_operadores < 1:
+        print("Erro: Nenhum operador digitado.")
         return False, []
 
     letras.sort()
